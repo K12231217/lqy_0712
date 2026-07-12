@@ -40,12 +40,12 @@ uint32 cooldown_end = 0;
 uint8 target_confirm_cnt = 0;
 #define CONFIRM_FRAMES 3    // 连续3帧找到才认为有效
 
-uint8 tar_laser = 0;			// Single laser index
-uint8 table[] = {IO_PA3};  /* Single laser on PA3 */
+uint8 tar_laser = 2;			//打靶所用的激光
+uint8 table[] = {IO_P44,IO_PA6,IO_PA3,IO_PA4,IO_PA1};
 void laser_init(void)
 {
 	uint8 i;
-	for(i = 0; i < sizeof(table) / sizeof(table[0]); i++)
+	for(i = 0;i < 5;i++)
 	{
 		gpio_init(table[i], GPO, 0, GPO_PUSH_PULL);
 	}
@@ -155,6 +155,7 @@ uint8 get_laser_duration(uint16 speed)
 //打靶
 void attack_target(void)
 {
+	int16 offset;
 	uint8 trigg_y;
 	uint8 duration;
 	uint16 abs_l,abs_r,cur_speed;
@@ -199,8 +200,14 @@ void attack_target(void)
 	if(tar_y > trigg_y) //这个阈值要根据实际速度调我觉得 tar_y越大越靠近
 	{
 		
-			// Single laser: always fire laser[0]
-			laser_on(0);
+		//选择那个激光打靶 根据offset 偏移图像中心
+		offset = (int16)(tar_x - 94);   // 图像中心
+		if(offset < -25)      tar_laser = 0;
+		else if(offset < -10) tar_laser = 1;
+		else if(offset <= 10) tar_laser = 2;
+		else if(offset <= 25) tar_laser = 3;
+		else                  tar_laser = 4;
+		laser_on(tar_laser);
 		laser_time = time_1ms;
 		attack_flag = 1;
 	
