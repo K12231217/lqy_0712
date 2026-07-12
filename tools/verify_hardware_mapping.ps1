@@ -49,4 +49,27 @@ foreach ($pattern in @('T17H', 'T17L', 'T18H', 'T18L',
     }
 }
 
+$laserSource = Get-Content -Raw -LiteralPath (Join-Path $root 'project\code\laser.c')
+
+# Verify laser pins don't conflict with encoder direction pins
+if ($laserSource -match 'IO_P44') {
+    throw 'laser.c MUST NOT use IO_P44: it is the encoder right DIR pin (see Motor.h).'
+}
+if ($laserSource -match 'IO_P46') {
+    throw 'laser.c MUST NOT use IO_P46: it is the encoder left DIR pin (see Motor.h).'
+}
+
+$mainSource = Get-Content -Raw -LiteralPath (Join-Path $root 'project\user\main.c')
+$initHeader = Get-Content -Raw -LiteralPath (Join-Path $root 'project\code\Init.h')
+$initSource = Get-Content -Raw -LiteralPath (Join-Path $root 'project\code\Init.c')
+if ($mainSource -notmatch 'uint8\s+ControlFlag\s*=\s*1') {
+    throw 'Race firmware must default ControlFlag to image-processing mode.'
+}
+if ($initHeader -notmatch '#define\s+APP_RACE_MODE\s+1') {
+    throw 'Init.h is missing the race-mode compile-time switch.'
+}
+if ($initSource -notmatch '#if\s*!APP_RACE_MODE') {
+    throw 'Init.c does not compile WiFi initialization out of race mode.'
+}
+
 Write-Output 'Hardware mapping static contract passed.'

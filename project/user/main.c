@@ -7,7 +7,7 @@
 #include "zf_common_headfile.h"
 #include "imu660.h"
 // **************************** 全局变量 ****************************
-uint8 ControlFlag=0;  // 控制模式：1 为图像处理，0 为上位机传图
+uint8 ControlFlag=1;  // Race mode: image processing and 5 ms motor control
 uint32 time_1ms=0;
 char display_buf[32];
 void main(void)

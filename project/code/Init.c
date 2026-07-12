@@ -64,6 +64,7 @@ void System_Init(void)
 			system_delay_ms(500);                                
 		}
 		
+#if !APP_RACE_MODE
 		if(!ControlFlag){
             // WIFI SPI 初始化
 			while(wifi_spi_init("TCP", "123456789"))
@@ -79,6 +80,7 @@ void System_Init(void)
 			seekfree_assistant_camera_information_config(SEEKFREE_ASSISTANT_MT9V03X, mt9v03x_image[0], MT9V03X_W, MT9V03X_H);
 			seekfree_assistant_camera_boundary_config(X_BOUNDARY, MT9V03X_H, left_control_line,right_control_line, mid_line,NULL,NULL,NULL);		
 		}
+#endif
 
 		
 		

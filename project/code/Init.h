@@ -1,6 +1,7 @@
 #ifndef __Init_H_
 #define __INIT_H_
 #define INIT_WIFI_COMMAND_DEBUG_ENABLE 0
+#define APP_RACE_MODE 1
 
 #include "zf_common_headfile.h"
 
