@@ -1,0 +1,20 @@
+# Keil C251 build products and per-user files
+project/mdk/out_file/
+project/mdk/Objects/
+project/mdk/Listings/
+*.obj
+*.hex
+*.map
+*.lst
+*.m51
+*.plg
+*.uvopt
+*.uvgui.*
+*.uvguix.*
+
+# Local workflow evidence
+.dev-workflow/
+
+# OS files
+Thumbs.db
+.DS_Store

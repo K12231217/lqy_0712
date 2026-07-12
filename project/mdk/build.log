@@ -1,0 +1,29 @@
+Build target 'stc32g144k246'
+linking...
+*** ERROR L127: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  Ring_ShouldBeepOnStepEnter?
+    MODULE:  .\out_file\test.obj (test)
+
+*** ERROR L128: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  Ring_ShouldBeepOnStepEnter?
+    MODULE:  .\out_file\test.obj (test)
+    ADDRESS: FDFFD0H
+
+*** ERROR L128: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  Ring_ShouldBeepOnStepEnter?
+    MODULE:  .\out_file\test.obj (test)
+    ADDRESS: FDFFDDH
+
+*** ERROR L128: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  Ring_ShouldBeepOnStepEnter?
+    MODULE:  .\out_file\test.obj (test)
+    ADDRESS: FDFFE9H
+
+*** ERROR L128: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  Ring_ShouldBeepOnStepEnter?
+    MODULE:  .\out_file\test.obj (test)
+    ADDRESS: FDFFF6H
+
+Program Size: data=8.6 edata+hdata=30764 xdata=60473 const=16693 code=142494
+Target not created.
+Build Time Elapsed:  00:00:00
