@@ -2,6 +2,7 @@
 project/mdk/out_file/
 project/mdk/Objects/
 project/mdk/Listings/
+project/mdk/integration-build-*.log
 *.obj
 *.hex
 *.map
