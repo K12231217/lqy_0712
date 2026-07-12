@@ -24,13 +24,21 @@ extern int16 tar_speed;
 #define MOTOR_LEFT_COMMAND_SIGN   ( -1 )
 #define MOTOR_RIGHT_COMMAND_SIGN  ( -1 )
 
-#define ENCODER_DIR_1                 	(PWMA_ENCODER)              // 带方向编码器对应使用的编码器接口 
-#define ENCODER_DIR_PULSE_1            	(PWMA_ENCODER_CH1P_P60)     // PULSE 对应的引脚
-#define ENCODER_DIR_DIR_1              	(PWMA_ENCODER_CH2P_P62)     // DIR 对应的引脚
+/* Target vehicle encoder wiring: right=TIM17(P8.0,P4.4), left=TIM18(P9.0,P4.6). */
+#define ENCODER_RIGHT_TIMER            ( TIM17_ENCODER )
+#define ENCODER_RIGHT_PULSE_PIN        ( TIM17_ENCODER_CH1_P80 )
+#define ENCODER_RIGHT_DIR_PIN          ( IO_P44 )
+#define ENCODER_LEFT_TIMER             ( TIM18_ENCODER )
+#define ENCODER_LEFT_PULSE_PIN         ( TIM18_ENCODER_CH1_P90 )
+#define ENCODER_LEFT_DIR_PIN           ( IO_P46 )
 
-#define ENCODER_DIR_2                 	(PWMC_ENCODER)              // 带方向编码器对应使用的编码器接口
-#define ENCODER_DIR_PULSE_2       		(PWMC_ENCODER_CH1P_P40)     // PULSE 对应的引脚
-#define ENCODER_DIR_DIR_2           	(PWMC_ENCODER_CH2P_P42)     // DIR 对应的引脚
+/* Keep Init.c's reference-project interface unchanged. */
+#define ENCODER_DIR_1                  ( ENCODER_RIGHT_TIMER )
+#define ENCODER_DIR_PULSE_1            ( ENCODER_RIGHT_PULSE_PIN )
+#define ENCODER_DIR_DIR_1              ( ENCODER_RIGHT_DIR_PIN )
+#define ENCODER_DIR_2                  ( ENCODER_LEFT_TIMER )
+#define ENCODER_DIR_PULSE_2            ( ENCODER_LEFT_PULSE_PIN )
+#define ENCODER_DIR_DIR_2              ( ENCODER_LEFT_DIR_PIN )
 
 //250
 #define MAX_SPEED 150
