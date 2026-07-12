@@ -35,8 +35,8 @@ void main(void)
 		
 		//Out_servo=seekfree_assistant_parameter[0];
 
-		//printf("%d, %d\r\n",imu660ra_gyro_z,encoder_data_l);
-		//printf("%d\r\n",imu660ra_gyro_z);
+		//printf("%d, %d\r\n",imu660rb_gyro_z,encoder_data_l);
+		//printf("%d\r\n",imu660rb_gyro_z);
 //		tar_speed = seekfree_assistant_parameter[0];
 //		pid_lf.kp=seekfree_assistant_parameter[1];
 //		pid_lf.ki=seekfree_assistant_parameter[2];
@@ -160,7 +160,7 @@ void pit_handler(void)
 		Buzzer_Task5ms();
 
 		if(ControlFlag){
-			imu660ra_get_gyro();
+			imu660rb_get_gyro();
 			imu660_yaw_update_5ms();
 			Encoder_GetValue();
 			

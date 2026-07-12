@@ -23,7 +23,7 @@ void System_Init(void)
 		laser_init();
 //		
 //      // 陀螺仪初始化
-		imu660ra_init();
+		imu660rb_init();
 		
 		//编码器初始化
         encoder_dir_init(ENCODER_DIR_1, ENCODER_DIR_PULSE_1, ENCODER_DIR_DIR_1);   // 初始化编码器模块与引脚，带方向增量编码器模式

@@ -43,8 +43,8 @@ void imu660_yaw_calibration(void)
 
     for(i = 0; i < 100; i++)
     {
-        imu660ra_get_gyro();
-        bias_sum += imu660ra_gyro_z;
+        imu660rb_get_gyro();
+        bias_sum += imu660rb_gyro_z;
         system_delay_ms(10);
     }
 
@@ -65,8 +65,8 @@ float imu660_yaw_update_5ms(void)
     float gyro_z_dps;
     float yaw_next;
 
-    gyro_z_raw = (int16)(imu660ra_gyro_z - gyro_bias_z);
-    gyro_z_dps = imu660ra_gyro_transition(gyro_z_raw);
+    gyro_z_raw = (int16)(imu660rb_gyro_z - gyro_bias_z);
+    gyro_z_dps = imu660rb_gyro_transition(gyro_z_raw);
 
     if(gyro_z_dps > -IMU660_GYRO_DEADBAND_DPS &&
        gyro_z_dps < IMU660_GYRO_DEADBAND_DPS)
