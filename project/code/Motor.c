@@ -18,13 +18,15 @@ int16 encoder_data_l=0;
 
 void Motor_Init(void)
 {
-	gpio_init(DIR_L, GPO, GPIO_LOW, GPO_PUSH_PULL);   // GPIO 初始化为输出 默认上拉输出高
-    pwm_init(PWM_L, 17000, 0);                         // PWM 通道初始化频率 17KHz 占空比初始为 0
-
-    gpio_init(DIR_R, GPO, GPIO_LOW, GPO_PUSH_PULL);   // GPIO 初始化为输出 默认上拉输出高
-    pwm_init(PWM_R, 17000, 0);                         // PWM 通道初始化频率 17KHz 占空比初始为 0
-	
-//	motor_test();
+	/* Keep both drivers asleep until PH and PWM are configured. */
+	gpio_init(MOTOR_LEFT_NSLEEP, GPO, GPIO_LOW, GPO_PUSH_PULL);
+    gpio_init(MOTOR_RIGHT_NSLEEP, GPO, GPIO_LOW, GPO_PUSH_PULL);
+    gpio_init(MOTOR_LEFT_PH, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+    gpio_init(MOTOR_RIGHT_PH, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+    pwm_init(PWM_L, MOTOR_PWM_FREQ, 0);
+    pwm_init(PWM_R, MOTOR_PWM_FREQ, 0);
+    gpio_set_level(MOTOR_LEFT_NSLEEP, GPIO_HIGH);
+    gpio_set_level(MOTOR_RIGHT_NSLEEP, GPIO_HIGH);
 }
 
 
@@ -33,47 +35,52 @@ void Motor_Init(void)
 #define M_TEST  1000
 void motor_test(void)
 {
-		gpio_set_level(DIR_L, GPIO_LOW);  
-		pwm_set_duty (PWM_L, M_TEST);
+		Motor_control(PWM_L, M_TEST);
 		system_delay_ms(1000);
-		gpio_set_level(DIR_L, GPIO_HIGH);  
+		Motor_control(PWM_L, -M_TEST);
 		system_delay_ms(1000);
 		
-		pwm_set_duty (PWM_L, 0);
+		Motor_control(PWM_L, 0);
 		gpio_set_level(IO_P65, 1);system_delay_ms(200);
 		gpio_set_level(IO_P65, 0);
 		
-		gpio_set_level(DIR_R, GPIO_LOW);  
-		pwm_set_duty (PWM_R, M_TEST);
+		Motor_control(PWM_R, M_TEST);
 		system_delay_ms(1000);
-		gpio_set_level(DIR_R, GPIO_HIGH);  
+		Motor_control(PWM_R, -M_TEST);
 		system_delay_ms(1000);
-		pwm_set_duty (PWM_R, 0);
+		Motor_control(PWM_R, 0);
 		gpio_set_level(IO_P65, 1);system_delay_ms(200);
 		gpio_set_level(IO_P65, 0);
 
 }
 void Motor_control(pwm_channel_enum wheel,int16 speed)
 {
-	if(speed>=0){
-		if(wheel==PWM_L){
-			gpio_set_level(DIR_L, GPIO_LOW);                                    
-			pwm_set_duty(PWM_L, speed);		
-		}
-		else {
-			gpio_set_level(DIR_R, GPIO_LOW);                                    
-			pwm_set_duty(PWM_R, speed);	
-		}            
+	int16 command = speed;
+	pwm_channel_enum en_pwm;
+	gpio_pin_enum ph_pin;
+
+	if(wheel == PWM_L)
+	{
+		command = (int16)(command * MOTOR_LEFT_COMMAND_SIGN);
+		en_pwm = PWM_L;
+		ph_pin = MOTOR_LEFT_PH;
 	}
-	else {
-		if(wheel==PWM_L){
-			gpio_set_level(DIR_L, GPIO_HIGH);                                    
-			pwm_set_duty(PWM_L, -speed);		
-		}
-		else {
-			gpio_set_level(DIR_R, GPIO_HIGH);                                    
-			pwm_set_duty(PWM_R, -speed);	
-		}              
+	else
+	{
+		command = (int16)(command * MOTOR_RIGHT_COMMAND_SIGN);
+		en_pwm = PWM_R;
+		ph_pin = MOTOR_RIGHT_PH;
+	}
+
+	if(command >= 0)
+	{
+		gpio_set_level(ph_pin, GPIO_HIGH);
+		pwm_set_duty(en_pwm, command);
+	}
+	else
+	{
+		gpio_set_level(ph_pin, GPIO_LOW);
+		pwm_set_duty(en_pwm, -command);
 	}
 }
 

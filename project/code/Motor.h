@@ -5,11 +5,24 @@
 extern int16 encoder_data_r;
 extern int16 encoder_data_l;
 extern int16 tar_speed;
-#define  DIR_R              ( IO_P50 )
-#define  PWM_R              ( PWMD_CH2_P51 )
-                              
-#define  DIR_L              ( IO_P52 )
-#define  PWM_L              ( PWMD_CH4_P53 )
+
+/* DRV8701 resources from the target vehicle. Keep PWM_L/PWM_R aliases because
+ * the reference control logic routes wheel commands through Motor_control(). */
+#define MOTOR_LEFT_EN_PWM    ( PWMB_CH3_P76 )
+#define MOTOR_LEFT_PH        ( IO_P75 )
+#define MOTOR_LEFT_NSLEEP    ( IO_P74 )
+#define MOTOR_RIGHT_EN_PWM   ( PWMD_CH1_P50 )
+#define MOTOR_RIGHT_PH       ( IO_P77 )
+#define MOTOR_RIGHT_NSLEEP   ( IO_P51 )
+
+#define PWM_L                ( MOTOR_LEFT_EN_PWM )
+#define PWM_R                ( MOTOR_RIGHT_EN_PWM )
+#define MOTOR_PWM_FREQ       ( 15000 )
+
+/* The target vehicle wiring is inverted relative to positive vehicle speed.
+ * Encoder signs are migrated separately and must be verified with the wheels raised. */
+#define MOTOR_LEFT_COMMAND_SIGN   ( -1 )
+#define MOTOR_RIGHT_COMMAND_SIGN  ( -1 )
 
 #define ENCODER_DIR_1                 	(PWMA_ENCODER)              // 带方向编码器对应使用的编码器接口 
 #define ENCODER_DIR_PULSE_1            	(PWMA_ENCODER_CH1P_P60)     // PULSE 对应的引脚
